@@ -1,0 +1,133 @@
+﻿@model Auction.Models.AuctionViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div>
+    <h3>New Auction</h3>
+
+
+    <hr />
+    <div class="row" style="margin-left:30%">
+        <div class="col-md-8">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Product Name</label>
+                    <select asp-for="ProductViewModelId" id="productlist"
+                            class="form-control"
+                            asp-items="@(new SelectList( ViewBag.List,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="ProductViewModelId" class="text-danger"></span>
+                </div>
+                <div>
+                    <label class="control-label">Description</label>
+                    <textarea id="productdesciption" readonly class="form-control"> </textarea>
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Bid" class="control-label"></label>
+                    <input asp-for="Bid" onchange="checkBid()" class="form-control" />
+                    <span asp-validation-for="Bid" id="Bid-error" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndDate" class="control-label"></label>
+                    <input asp-for="EndDate" id="EndDate" onchange="TDate()" class="form-control" />
+                    <span asp-validation-for="EndDate" id="EndDate-error" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a style="color:blue" asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#productlist").change(function () {
+                var productId = $("#productlist").val();
+                if (productId != "") {
+                    GetProduct(productId);
+                }
+                else {
+                    $("#productdesciption").text("");
+
+                }
+
+            });
+        });
+
+        function GetProduct(productId) {
+            $.ajax({
+                async: true,
+                type: 'GET',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Auction/GetProduct',
+                data: { productId: productId },
+                success: function (data) {
+
+                    $("#productdesciption").val(data.productDescription);
+                },
+                error: function () {
+                    alert("There is some problem to get.");
+                }
+            });
+        }
+        function checkBid() {
+            var value = $("#Bid").val();
+            if (value <= 0) {
+                $("#Bid-error").text("The bid must be Bigger than 0");
+                $("#Bid").val("");
+            }
+            else {
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    url: '/Auction/GetInfoWallet',
+                    data: {},
+                    success: function (data) {
+
+                        if (data > value) {
+
+                        }
+                        else {
+                            $("#Bid-error").text("The bid is higher than what is in you wallet!");
+                            $("#Bid").val("");
+                        }
+                    },
+                    error: function () {
+                        $("#Bid-error").text("Error! Please try again later!");
+                    }
+                });
+            }
+        }
+        function TDate() {
+            var UserDate = document.getElementById("EndDate").value;
+            var ToDate = new Date();
+
+            if (new Date(UserDate).getTime() < ToDate.getTime()) {
+                document.getElementById("EndDate").value = "";
+                $("#EndDate-error").text("The Date must be Bigger than today date");
+                return false;
+            }
+            return true;
+        }
+
+    </script>

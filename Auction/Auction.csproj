@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20230828140948_IdentityV1.cs" />
+    <Compile Remove="Migrations\20230828140948_IdentityV1.Designer.cs" />
+    <Compile Remove="Migrations\20230830194213_Auctionv1.cs" />
+    <Compile Remove="Migrations\20230830194213_Auctionv1.Designer.cs" />
+    <Compile Remove="Migrations\20230830195406_Auctionv1.cs" />
+    <Compile Remove="Migrations\20230830195406_Auctionv1.Designer.cs" />
+    <Compile Remove="Migrations\20230830201712_Auctionv1.cs" />
+    <Compile Remove="Migrations\20230830201712_Auctionv1.Designer.cs" />
+    <Compile Remove="Migrations\20230830203412_Auctionv1.cs" />
+    <Compile Remove="Migrations\20230830203412_Auctionv1.Designer.cs" />
+    <Compile Remove="Migrations\20230830203627_auctionv1.cs" />
+    <Compile Remove="Migrations\20230830203627_auctionv1.Designer.cs" />
+    <Compile Remove="Migrations\20230831092248_AuctionV1.cs" />
+    <Compile Remove="Migrations\20230831092248_AuctionV1.Designer.cs" />
+    <Compile Remove="Migrations\20230831092828_Auctionv1.cs" />
+    <Compile Remove="Migrations\20230831092828_Auctionv1.Designer.cs" />
+    <Compile Remove="Migrations\20230831093057_Auctionv1.cs" />
+    <Compile Remove="Migrations\20230831093057_Auctionv1.Designer.cs" />
+    <Compile Remove="Migrations\20230831094023_Auctionv1.cs" />
+    <Compile Remove="Migrations\20230831094023_Auctionv1.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\img\close-icon.svg" />
+    <None Include="wwwroot\assets\img\logos\facebook.svg" />
+    <None Include="wwwroot\assets\img\logos\google.svg" />
+    <None Include="wwwroot\assets\img\logos\ibm.svg" />
+    <None Include="wwwroot\assets\img\logos\microsoft.svg" />
+    <None Include="wwwroot\assets\img\navbar-logo.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.32" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.32">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.32">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="3.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+</Project>

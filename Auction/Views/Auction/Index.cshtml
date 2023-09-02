@@ -1,0 +1,159 @@
+﻿@model IEnumerable<Auction.Models.AuctionProductModel>
+@using Auction.Data
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="~/css/sortable-table.css" rel="stylesheet" />
+<script src="~/js/sortable-table.js"></script>
+<div>
+    <h3>Current Auction</h3>
+    <br />
+    <div class="table-responsive">
+        <table id="dtBasicExample" class="table  table-hover sortable">
+            <thead>
+                <tr>
+                    <th class="th-sm" width="25%">
+                        Product
+                    </th>
+                    <th class="th-sm" width="25%">
+                        Seller
+                    </th>
+                    <th class="th-sm" width="25%">
+                        @Html.DisplayNameFor(model => model.Bid)
+                    </th>
+                    <th class="num" width="20%">
+                        <button>
+                            Time Remaning
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </th> 
+
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td class="item">
+                            <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProductName)</a>
+                        </td>
+
+                        <td class="item">
+                            @Html.DisplayFor(modelItem => item.ApplicantName)
+                        </td>
+                        <td class="item">
+                            $@Html.DisplayFor(modelItem => item.Bid)
+                        </td>
+                        <td class="item">
+                            @if (item.EndDate >= DateTime.Today)
+                            {
+                                var diffOfDates = item.EndDate - DateTime.Today;
+                                var days = diffOfDates.Days;
+                                <div> @days Days</div>
+                            }
+
+                        </td>
+                        <td class="item" style="text-align-last: right;">
+                            @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == item.ApplicantiD)
+                            {
+                                <button type="button" class="btn btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="confirmDeleteModal(@item.Id)"><i class="fa fa-trash-o" style="font-size: 20px"></i></button>
+                            }
+                            else
+                            {
+
+                            }
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <div class="row">
+        <p class="col-lg-6" style=" text-align: justify; text-align-last: left;">
+
+            <a asp-action="Create" class="btn btn-primary">New auction </a>
+        </p>
+        <p class="col-lg-6" style="text-align: justify; text-align-last: right;">Your current wallet:$<label id="currentwallet"></label></p>
+
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            url: '/Auction/GetInfoWallet',
+            data: {},
+            success: function (data) {
+                console.log(data);
+                $("#currentwallet").text(data);
+
+            },
+            error: function () {
+                $("#Bid-error").text("Error! Please try again later!");
+            }
+        });
+
+
+    });
+
+    function confirmDeleteModal(itemId) {
+        // Set the item ID in the modal body
+        $("#deleteModal .modal-body").text("Are you sure you want to delete auction?");
+
+        // Set the delete button's click event handler
+        $("#confirmDelete").off("click").on("click", function () {
+
+
+            // Close the modal
+
+            $("#deleteModal").hide();
+
+            var url = '@Url.Action("Delete", "Auction")?id=' + itemId;
+
+            window.location=url;
+
+
+        });
+    }
+</script>

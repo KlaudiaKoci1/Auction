@@ -106,7 +106,7 @@
    
     function checkBid() {
         var value = Number(document.getElementById('Bid').value);
-        var valuecurrent = Number(document.getElementById('currentbid').innerHTML);
+        var valuecurrent = Number(document.getElementById('currentbid').innerHTML.slice(1));
         if (value <= valuecurrent) {
             $("#Bid-error").text("The bid must be bigger than current bid");
             $("#Bid").val("");

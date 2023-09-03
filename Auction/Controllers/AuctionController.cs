@@ -141,12 +141,16 @@ namespace Auction.Controllers
            
             if (productsList.Count == 0)
             {
-                var produkt = new ProductViewModel();
-                produkt.ProductName = "Produkt1";
-                produkt.ProductDescription = "Pershkrimi i produktit1";
-                _context.Add(produkt);
+                for (int i = 1; i < 5; i++)
+                {
+                    var produkt = new ProductViewModel();
+                    produkt.ProductName = "Produkt" + i;
+                    produkt.ProductDescription = "Pershkrimi i produktit" + i + " Ky eshte nje pershkrim produkti";
+                    _context.Add(produkt);
 
-                 _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+
 
                 productsList = (from product in _context.Products
                                 select new SelectListItem()
